@@ -128,11 +128,11 @@ flowchart LR
         Checkout["Eventos de Compra"]
     end
 
-    subgraph Amazon MSK (Cluster Kafka Gerenciado)
+    subgraph MSK["Amazon MSK (Cluster Kafka Gerenciado)"]
         Log[("Tópico de Log Imutável\nPartição 0: [e0][e1][e2][e3]...\nPartição 1: [e0][e1][e2]...")]
     end
 
-    subgraph Consumidores com Offsets Independentes
+    subgraph Consumidores["Consumidores com Offsets Independentes"]
         IA["Modelo de IA\n(Offset = 0: relendo histórico)"]
         Fraude["Detecção de Fraude em Tempo Real\n(Offset = 3: ponta do log)"]
         DataLake["Carga para S3 / Data Lake\n(Offset = 2)"]
@@ -159,7 +159,7 @@ Chegamos à conclusão da nossa história. A TechStore Nuvem agora opera uma **A
 
 ```mermaid
 flowchart TD
-    subgraph Espinha Dorsal de Eventos e Mensageria (SNS, SQS, MSK)
+    subgraph Espinha["Espinha Dorsal de Eventos e Mensageria (SNS, SQS, MSK)"]
         Bus[("Barramento de Mensageria e Event Streaming")]
     end
 
