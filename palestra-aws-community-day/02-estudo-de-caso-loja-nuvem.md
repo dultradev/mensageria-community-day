@@ -63,16 +63,15 @@ Para salvar a operação, a equipe separou a recepção do pedido do seu process
 flowchart TD
     Cliente["Cliente (Navegador)"] -->|"1. POST /checkout"| API["API de Checkout"]
     API -->|"2. Envia Mensagem (~10ms)"| SQS[("Amazon SQS\n(Fila de Pedidos)")]
-    API -->>|"3. 202 Accepted ('Pedido Recebido!')"| Cliente
+    API -.->|"3. 202 Accepted - Pedido Recebido!"| Cliente
 
     subgraph Processamento em Segundo Plano
         SQS -->|"4. Consome em lote"| Worker["Worker de Processamento"]
         Worker --> Pagto["Gateway Pagamentos"]
         Worker --> Estoque["Banco de Estoque"]
         Worker --> Fiscal["Serviço Fiscal"]
+        Worker -.->|"5. Se falhar 5x"| DLQ[("Dead Letter Queue (DLQ)")]
     end
-
-    Worker -.->|"5. Se falhar 5x"| DLQ[("Dead Letter Queue (DLQ)")]
 ```
 
 ### O Que Mudou:
